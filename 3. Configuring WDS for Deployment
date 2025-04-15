@@ -1,0 +1,143 @@
+Step 1: Install and Configure Microsoft Deployment Toolkit (MDT)
+
+1. Download and Install Windows ADK (Windows Assessment and Deployment Kit):
+  
+  https://learn.microsoft.com/en-us/windows-hardware/get-started/adk-install
+  https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/winpe-intro?view=windows-11
+  https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/download-winpe--windows-pe?view=windows-11
+
+2. Download and Install MDT from Microsoft Download Center.
+
+https://www.microsoft.com/en-us/download/details.aspx?id=54259
+
+Step 2: Create a Deployment Share in MDT
+
+    1. Open Deployment Workbench (MDT).
+    2. Right-click Deployment Shares → Click New Deployment Share.
+    3. Set the deployment share path (e.g., D:\DeploymentShare).
+    4. Configure deployment settings:
+        - Select a Windows Image (WIM file)
+        - Add necessary drivers and applications
+    5. Click Finish after setup.
+    
+
+Step 3: Generate a Boot Image
+
+    1. Right-click on the Deployment Share → Click Update Deployment Share.
+    2. This generates the LiteTouchPE_x64.wim boot image.
+    
+    
+Step-by-Step Guide: How to Generate a Boot Image in Windows Server 2025
+-----------------------------------------------------------------------
+
+Install Windows ADK and WinPE Add-on
+
+    1. Download the latest Windows ADK and WinPE Add-on from Microsoft's official site.
+    2. Install Windows ADK and select:
+        - Deployment Tools
+
+    3. Install WinPE Add-on and select:
+        - Windows Preinstallation Environment (WinPE)
+
+Create a WinPE Boot Image
+
+After installing ADK and WinPE, generate a WinPE boot image.
+
+Step 1: Open Deployment Tools Command Prompt
+
+    Open Start → Search for Deployment and Imaging Tools Environment → Right-click Run as Administrator.
+
+Step 2: Create a Working Directory
+
+Run the following command to create a WinPE folder structure:
+
+	copype.cmd amd64 C:\WinPE
+
+    - The amd64 option is for 64-bit Windows (most common).
+    - This creates a directory: C:\WinPE.
+
+Step 3: Generate a WinPE Boot Image
+
+Run:
+
+	MakeWinPEMedia /ISO C:\WinPE C:\WinPE\WinPE.iso
+
+    - This generates WinPE.iso in C:\WinPE.
+
+Customize the Boot Image (Optional)
+
+You can modify the WinPE boot image before deploying.
+Mount the Boot Image
+
+	Dism /Mount-Image /ImageFile:C:\WinPE\media\sources\boot.wim /Index:1 /MountDir:C:\WinPE\Mount
+
+Add Drivers
+
+    1. Copy drivers to C:\WinPE\Drivers.
+    2. Run:
+
+	Dism /Image:C:\WinPE\Mount /Add-Driver /Driver:C:\WinPE\Drivers /Recurse
+
+Add Network Support and Scripting
+
+    - Add PowerShell:
+
+    	Dism /Image:C:\WinPE\Mount /Add-Package /PackagePath:"C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\WinPE-PowerShell.cab"
+
+Modify Boot Configuration (Optional)
+
+You can modify startnet.cmd to run custom scripts on boot:
+
+	notepad C:\WinPE\Mount\Windows\System32\startnet.cmd
+
+    Add:
+
+    	wpeinit
+    	cmd.exe
+
+Save Changes and Unmount
+
+	Dism /Unmount-Image /MountDir:C:\WinPE\Mount /Commit
+
+Deploy the Boot Image
+
+After generating the boot image, you can deploy it via WDS, PXE.
+
+Option 1: Add Boot Image to Windows Deployment Services (WDS)
+
+    1. Open Windows Deployment Services (WDS) (wdsmgmt.msc).
+    2. Right-click Boot Images → Add Boot Image.
+    3. Select C:\WinPE\media\sources\boot.wim.
+    4. Click Next and complete the wizard.
+
+Option 2: Create a Bootable USB Drive
+
+    1. Insert a USB drive.
+    2. Open Command Prompt as Administrator and run:
+
+	diskpart
+
+3.Inside DiskPart:
+
+	list disk
+	select disk X  # Replace X with your USB drive number
+	clean
+	create partition primary
+	format fs=ntfs quick
+	assign
+	exit
+
+4. Copy files to USB:
+
+   	xcopy C:\WinPE\media\* X:\ /E /H /F
+
+Option 3: Use PXE Boot
+
+    Configure WDS for PXE boot.
+    Deploy the boot.wim file to PXE clients.
+
+6. Testing the Boot Image
+
+    Boot a virtual machine (VMware, Hyper-V) or physical PC from USB, PXE, or ISO.
+    If successful, the system should load into WinPE or your customized boot environment.
+

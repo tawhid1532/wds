@@ -1,0 +1,19 @@
+Step 1: Add the MDT Boot Image to WDS
+
+    1. Open Windows Deployment Services from Server Manager.
+    2. Expand Servers → Right-click your WDS Server → Select Add Boot Image.
+    3. Browse to the MDT boot image:
+
+    	D:\DeploymentShare\Boot\LiteTouchPE_x64.wim
+
+    4. Click Next, then Finish.
+
+Step 2: Configure PXE Boot Policy
+
+    1. Open WDS management console.
+    2. Right-click Server → Click Properties → Navigate to PXE Response.
+    3. Choose:
+
+        Respond to all clients (known and unknown)
+
+        Check Require administrator approval if necessary.

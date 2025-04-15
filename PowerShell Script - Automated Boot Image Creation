@@ -1,0 +1,17 @@
+Save this script as Create-WinPEBootImage.ps1 and run it as Administrator.
+
+How to Run the Script
+Step 1: Save and Run
+
+    1. Copy the script into a text editor and save it as Create-WinPEBootImage.ps1.
+    2. Open PowerShell as Administrator.
+    3. Navigate to the folder where the script is saved:
+
+	cd C:\Path\To\Script
+
+Run:
+
+    Set-ExecutionPolicy Bypass -Scope Process -Force
+    .\Create-WinPEBootImage.ps1
+
+

@@ -1,0 +1,116 @@
+Prerequisites
+-------------
+
+Before setting up a DHCP pool, ensure:
+ - The DHCP role is installed on Windows Server 2025.
+ - The server has a static IP address.
+ - The DHCP server is authorized in Active Directory (AD) (for domain environments).
+ 
+Install and Configure DHCP Server
+---------------------------------
+
+Method 1: Using Server Manager (GUI)
+
+1. Install DHCP Role:
+
+        Open Server Manager → Click Manage → Select Add Roles and Features.
+        Choose Role-based or feature-based installation → Click Next.
+        Select the DHCP Server role → Click Next until installation is complete.
+
+2. Authorize the DHCP Server (For AD Environments Only):
+
+        Open DHCP Manager (dhcpmgmt.msc).
+        Right-click the DHCP Server → Click Authorize.
+        
+Method 2: Using PowerShell
+
+1. Install the DHCP Role:
+
+	Install-WindowsFeature -Name DHCP -IncludeManagementTools
+
+2. Authorize the DHCP Server (for domain environments):
+
+	Add-DhcpServerInDC
+
+Creating a DHCP Scope (IP Pool)
+-------------------------------
+Method 1: Using DHCP Manager (GUI)
+
+    1. Open DHCP Manager (dhcpmgmt.msc).
+    2. Expand the DHCP Server → Right-click IPv4 → Click New Scope.
+    3. Name the Scope (e.g., "Office Network").
+    4. Define the IP Address Range:
+
+        Start IP: 192.168.1.100
+        End IP: 192.168.1.150
+        Subnet Mask: 255.255.255.0
+
+    5. Exclude IPs (Optional):
+
+        Example: Exclude 192.168.1.120 to 192.168.1.125 for reserved devices.
+
+    6. Set Lease Duration (Default: 8 days).
+
+    7. Configure DHCP Options:
+
+        Router (Gateway): 192.168.1.1
+        DNS Server: 192.168.51.54
+        Domain Name (if applicable): ad.therapbd.net
+
+    8. Activate the Scope → Click Finish.
+
+Method 2: Using PowerShell
+
+    1. Create a New DHCP Scope:
+
+	Add-DhcpServerv4Scope -Name "Office Network" -StartRange 192.168.1.100 -EndRange 192.168.1.150 -SubnetMask 	255.255.255.0 -State Active
+
+2. Set the Default Gateway (Router):
+
+	Set-DhcpServerv4OptionValue -ScopeId 192.168.1.1 -OptionId 3 -Value 192.168.1.0
+
+3. Set the DNS Server:
+
+	Set-DhcpServerv4OptionValue -ScopeId 192.168.1.1 -OptionId 6 -Value 192.168.51.54
+
+4. Exclude Specific IPs:
+
+	Add-DhcpServerv4ExclusionRange -ScopeId 192.168.1.1 -StartRange 192.168.1.120 -EndRange 192.168.1.125
+
+5. Verify DHCP Configuration:
+
+	Get-DhcpServerv4Scope
+	
+
+Verify DHCP Functionality
+-------------------------
+
+After setup, test if clients receive IP addresses from the pool:
+
+    - Run ipconfig /release && ipconfig /renew on a client PC.
+    - Use Get-DhcpServerv4Lease -ScopeId 192.168.1.1 to view active leases.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

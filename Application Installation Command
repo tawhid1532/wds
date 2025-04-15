@@ -1,0 +1,20 @@
+Application Installation command - 
+--------------------------------
+
+1.  7zip         ==> msiexec.exe /I 7z2301-x64.msi /qn
+2.  Chrome       ==> msiexec.exe /I GoogleChromeStandaloneEnterprise64.msi /qn
+3.  RMM          ==> AGENT_10_9_10.EXE /silent
+4.  Notepad++    ==> npp.8.6.2.Installer.x64.exe /VERYSILENT 
+5.  Firefox      ==> msiexec.exe /I FirefoxSetup121.0.1.msi /qn
+6.  Git          ==> Git-2.43.0-64-bit.exe /silent
+7.  VSCode       ==> VSCodeUserSetup-x64-1.97.2  /VERYSILENT /NORESTART
+8.  Java8        ==> jdk-18_windows-x64_bin.exe /q
+9.  Nodejs       ==> msiexec.exe /I node-v21.6.0-x64.msi /qn
+10. IntelijIdea  ==> ideaIC-2023.3.2.exe /VERYSILENT 
+11. PuTty        ==> msiexec.exe /I putty-64bit-0.80-installer.msi /qn
+12. WinScp       ==> WinSCP-6.1.2-Setup.exe /silent
+13. Shophos      ==> SophosSetup.exe --quiet
+14. DEll         ==> SupportAssistInstaller.exe /s /v/qn
+15. HP           ==> setup.exe /s /v/qn
+16. FortiClient  ==> FortiClientVPNSetup_7.2.5.1053_x64.exe /s /v/qn
+VSCodeUserSetup-x64-1.85.2.exe  /VERYSILENT /NORESTART

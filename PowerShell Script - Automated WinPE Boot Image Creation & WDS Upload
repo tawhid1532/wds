@@ -1,0 +1,22 @@
+Save this as Create-WinPEBootImage-WDS.ps1 and run it as Administrator.
+
+How to Run the Script
+Step 1: Save and Run
+
+    1. Copy the script into a text editor and save it as Create-WinPEBootImage-WDS.ps1.
+    2. Open PowerShell as Administrator.
+    3. Navigate to the folder where the script is saved:
+
+	cd C:\Path\To\Script
+
+Run:
+
+    Set-ExecutionPolicy Bypass -Scope Process -Force
+    .\Create-WinPEBootImage-WDS.ps1
+
+Step 2: Follow On-Screen Prompts
+
+    If you want a bootable USB, enter Y and provide the USB drive letter.
+    If you want to add the boot image to WDS, enter Y.
+
+        The script will check if WDS is installed and automatically import the boot.wim file.

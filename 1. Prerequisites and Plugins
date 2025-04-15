@@ -1,0 +1,33 @@
+Before deploying WDS, ensure that your environment meets the following requirements:
+
+Hardware Requirements: 
+
+    - Processor: 64-bit (x64) CPU with support for PXE booting.
+    - RAM: Minimum 2GB (Recommended 4GB+ for smooth operation).
+    - Storage: Minimum 50GB free disk space (depends on the number of images).
+    - Network: A high-speed network connection.
+
+Software Requirements: 
+
+    - Windows Server 2025 (Standard or Datacenter Edition).
+    - [If needed] Active Directory Domain Services (AD DS): WDS should be installed on a domain-joined server.
+    - Dynamic Host Configuration Protocol (DHCP): Required for PXE booting.
+    - Domain Name System (DNS): WDS relies on DNS for name resolution.
+    - Windows Assessment and Deployment Kit (ADK): Needed for WinPE and deployment tools.
+    - Windiws Preinstallation Environment (WinPE)
+    - Winodow Deployment Services (WDS) Server Role
+    - Microsoft Deployment Toolkit (MDT): Recommended for creating custom deployment images.
+    
+    
+For MDT Currently Need PowerShell (3.00)
+  
+Upgrading using Default PowerShell command
+
+1. winget search Microsoft.PowerShell
+2. winget install --id Microsoft.PowerShell --source winget
+3. winget install --id Microsoft.PowerShell.Preview --source winget
+
+User Permissions
+
+    - Administrator rights on the WDS server.
+    - DHCP administrator privileges (if DHCP is hosted on a separate server).

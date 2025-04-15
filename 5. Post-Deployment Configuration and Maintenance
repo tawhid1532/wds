@@ -1,0 +1,11 @@
+Enable Multicast for Faster Deployments:
+
+	wdsutil /Set-Server /EnableMulticast:Yes
+
+Monitor Deployment Logs:
+
+    - View logs in C:\Windows\Panther\Setupact.log and C:\Windows\Temp\DeploymentLogs.
+
+Update WDS Boot Images When Needed:
+
+    - If changes occur in MDT, update the boot image in WDS.
